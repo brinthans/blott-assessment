@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { Box } from '@/components/ui/box';
 import { VStack } from '@/components/ui/vstack';
@@ -29,10 +30,10 @@ type FormErrors = {
 
 export default function SignupScreen() {
 
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [fullName, setFullName] = useState('Brinthan');
+    const [email, setEmail] = useState('brinthsega@gmail.com');
+    const [password, setPassword] = useState('12345678');
+    const [confirmPassword, setConfirmPassword] = useState('12345678');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState<FormErrors>({});
@@ -66,9 +67,11 @@ export default function SignupScreen() {
         return Object.keys(newErrors).length === 0;
     };
 
+    const router = useRouter();
+
     const handleSignUp = () => {
         if (!validate()) return;
-        // TODO: Implement sign-up logic
+        router.push('/setup-pin');
     };
 
     return (
