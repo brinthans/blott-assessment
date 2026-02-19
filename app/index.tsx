@@ -1,153 +1,242 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import {
-  FlatList,
-  ActivityIndicator,
-  Image,
-  Pressable,
-  RefreshControl,
-} from 'react-native';
+import React, { useState } from 'react';
+import { Platform } from 'react-native';
+
 import { Box } from '@/components/ui/box';
+import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { Heading } from '@/components/ui/heading';
 import { Button, ButtonText } from '@/components/ui/button';
-import { fetchNews, NewsArticle } from '@/services/newsApi';
+import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
+import {
+    FormControl,
+    FormControlLabel,
+    FormControlLabelText,
+    FormControlHelper,
+    FormControlHelperText,
+    FormControlError,
+    FormControlErrorText,
+} from '@/components/ui/form-control';
+import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
+import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
+import { ScrollView } from '@/components/ui/scroll-view';
 
-function formatDate(unixTimestamp: number): string {
-  const date = new Date(unixTimestamp * 1000);
-  const day = date.getDate();
-  const month = date.toLocaleString('default', { month: 'short' });
-  const year = date.getFullYear();
-  return `${day} ${month} ${year}`;
-}
+type FormErrors = {
+    fullName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+};
 
-function NewsCard({ article }: { article: NewsArticle }) {
-  const handlePress = () => {
-    if (article.url) {
-      WebBrowser.openBrowserAsync(article.url);
-    }
-  };
+export default function SignupScreen() {
 
-  return (
-    <Pressable onPress={handlePress}>
-      <Box className="flex-row bg-background-50 rounded-2xl mx-4 mb-3 overflow-hidden shadow-sm">
-        {article.image ? (
-          <Image
-            source={{ uri: article.image }}
-            style={{ width: 100, height: 100 }}
-            resizeMode="cover"
-          />
-        ) : (
-          <Box className="w-[100px] h-[100px] bg-background-200 items-center justify-center">
-            <Text className="text-typography-400 text-2xl">📰</Text>
-          </Box>
-        )}
-        <Box className="flex-1 p-3 justify-between">
-          <Text
-            className="font-semibold text-sm text-typography-900 leading-5"
-            numberOfLines={2}
-          >
-            {article.headline}
-          </Text>
-          <Box className="flex-row items-center mt-2">
-            <Text className="text-xs text-typography-500 font-medium">
-              {article.source}
-            </Text>
-            <Text className="text-xs text-typography-400 mx-1">•</Text>
-            <Text className="text-xs text-typography-400">
-              {formatDate(article.datetime)}
-            </Text>
-          </Box>
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
+
+    const validate = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        if (!fullName.trim()) {
+            newErrors.fullName = 'Full name is required';
+        }
+
+        if (!email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!password) {
+            newErrors.password = 'Password is required';
+        } else if (password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters';
+        }
+
+        if (!confirmPassword) {
+            newErrors.confirmPassword = 'Please confirm your password';
+        } else if (password !== confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSignUp = () => {
+        if (!validate()) return;
+        // TODO: Implement sign-up logic
+    };
+
+    return (
+        <Box className="flex-1 bg-background-0">
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+            >
+                {/* Top safe area spacing */}
+                <Box className="pt-safe" />
+
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+                >
+                    {/* Title & Subtitle */}
+                    <Box className="px-5 mb-6">
+                        <Heading className="text-2xl font-normal text-typography-900 text-left mb-2">
+                            Introduce yourself
+                        </Heading>
+                        <Text className="text-base text-typography-600 text-left">
+                            We need to know a bit about you to get you up and running.
+                        </Text>
+                    </Box>
+
+                    {/* Form */}
+                    <VStack space="lg" className="px-5">
+                        {/* Full Name */}
+                        <FormControl isRequired isInvalid={!!errors.fullName}>
+                            <FormControlLabel>
+                                <FormControlLabelText>Full Name</FormControlLabelText>
+                            </FormControlLabel>
+                            <Input variant="outline" size="md">
+                                <InputField
+                                    placeholder="Enter your full name"
+                                    value={fullName}
+                                    onChangeText={(text) => {
+                                        setFullName(text);
+                                        if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+                                    }}
+                                    autoCapitalize="words"
+                                />
+                            </Input>
+                            {errors.fullName && (
+                                <FormControlError>
+                                    <FormControlErrorText>{errors.fullName}</FormControlErrorText>
+                                </FormControlError>
+                            )}
+                        </FormControl>
+
+                        {/* Email */}
+                        <FormControl isRequired isInvalid={!!errors.email}>
+                            <FormControlLabel>
+                                <FormControlLabelText>Email</FormControlLabelText>
+                            </FormControlLabel>
+                            <Input variant="outline" size="md">
+                                <InputField
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChangeText={(text) => {
+                                        setEmail(text);
+                                        if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                                    }}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                            </Input>
+                            {errors.email && (
+                                <FormControlError>
+                                    <FormControlErrorText>{errors.email}</FormControlErrorText>
+                                </FormControlError>
+                            )}
+                        </FormControl>
+
+                        {/* Password */}
+                        <FormControl isRequired isInvalid={!!errors.password}>
+                            <FormControlLabel>
+                                <FormControlLabelText>Password</FormControlLabelText>
+                            </FormControlLabel>
+                            <Input variant="outline" size="md">
+                                <InputField
+                                    placeholder="Enter your Password"
+                                    value={password}
+                                    onChangeText={(text) => {
+                                        setPassword(text);
+                                        if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
+                                    }}
+                                    secureTextEntry={!showPassword}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                                <InputSlot
+                                    className="pr-3"
+                                    onPress={() => setShowPassword(!showPassword)}
+                                >
+                                    <InputIcon
+                                        as={showPassword ? EyeIcon : EyeOffIcon}
+                                        className="text-typography-500"
+                                    />
+                                </InputSlot>
+                            </Input>
+                            {errors.password ? (
+                                <FormControlError>
+                                    <FormControlErrorText>{errors.password}</FormControlErrorText>
+                                </FormControlError>
+                            ) : (
+                                <FormControlHelper>
+                                    <FormControlHelperText size="sm">
+                                        Must be at least 8 characters.
+                                    </FormControlHelperText>
+                                </FormControlHelper>
+                            )}
+                        </FormControl>
+
+                        {/* Confirm Password */}
+                        <FormControl isRequired isInvalid={!!errors.confirmPassword}>
+                            <FormControlLabel>
+                                <FormControlLabelText>Confirm Password</FormControlLabelText>
+                            </FormControlLabel>
+                            <Input variant="outline" size="md">
+                                <InputField
+                                    placeholder="Confirm your Password"
+                                    value={confirmPassword}
+                                    onChangeText={(text) => {
+                                        setConfirmPassword(text);
+                                        if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                                    }}
+                                    secureTextEntry={!showConfirmPassword}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                                <InputSlot
+                                    className="pr-3"
+                                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                    <InputIcon
+                                        as={showConfirmPassword ? EyeIcon : EyeOffIcon}
+                                        className="text-typography-500"
+                                    />
+                                </InputSlot>
+                            </Input>
+                            {errors.confirmPassword && (
+                                <FormControlError>
+                                    <FormControlErrorText>{errors.confirmPassword}</FormControlErrorText>
+                                </FormControlError>
+                            )}
+                        </FormControl>
+                    </VStack>
+
+                    {/* Spacer pushes button to bottom */}
+                    <Box className="flex-1" />
+
+                    {/* Sign Up Button */}
+                    <Box className="px-5 pb-safe mb-4 mt-8">
+                        <Button
+                            size="lg"
+                            className="bg-primary-500 rounded-3xl w-full h-11 px-6 gap-3 shrink-0 justify-center items-center"
+                            onPress={handleSignUp}
+                        >
+                            <ButtonText className="text-typography-white font-semibold text-lg">
+                                Sign Up
+                            </ButtonText>
+                        </Button>
+                    </Box>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Box>
-      </Box>
-    </Pressable>
-  );
-}
-
-export default function Home() {
-  const [news, setNews] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadNews = useCallback(async (isRefresh = false) => {
-    try {
-      if (isRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
-      setError(null);
-      const articles = await fetchNews('general');
-      setNews(articles);
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadNews();
-  }, [loadNews]);
-
-  if (loading) {
-    return (
-      <Box className="flex-1 bg-background-0 items-center justify-center">
-        <ActivityIndicator size="large" color="#6366f1" />
-        <Text className="mt-4 text-typography-500">Loading news...</Text>
-      </Box>
     );
-  }
-
-  if (error) {
-    return (
-      <Box className="flex-1 bg-background-0 items-center justify-center px-6">
-        <Text className="text-4xl mb-4">⚠️</Text>
-        <Heading className="text-lg text-typography-900 mb-2">
-          Unable to load news
-        </Heading>
-        <Text className="text-typography-500 text-center mb-6">{error}</Text>
-        <Button
-          size="md"
-          className="bg-primary-500 rounded-full px-8"
-          onPress={() => loadNews()}
-        >
-          <ButtonText>Try Again</ButtonText>
-        </Button>
-      </Box>
-    );
-  }
-
-  return (
-    <Box className="flex-1 bg-background-0">
-      <Box className="pt-safe px-4 pb-2 bg-background-0">
-        <Heading className="text-2xl font-bold text-typography-900 mt-4">
-          Headlines
-        </Heading>
-      </Box>
-      <FlatList
-        data={news}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NewsCard article={item} />}
-        contentContainerStyle={{ paddingTop: 12, paddingBottom: 40 }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => loadNews(true)}
-            tintColor="#6366f1"
-          />
-        }
-        ListEmptyComponent={
-          <Box className="items-center justify-center py-20">
-            <Text className="text-typography-400 text-base">
-              No news articles available
-            </Text>
-          </Box>
-        }
-      />
-    </Box>
-  );
 }
