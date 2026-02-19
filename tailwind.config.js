@@ -126,9 +126,9 @@ module.exports = {
           800: 'rgb(var(--color-typography-800)/<alpha-value>)',
           900: 'rgb(var(--color-typography-900)/<alpha-value>)',
           950: 'rgb(var(--color-typography-950)/<alpha-value>)',
-          white: '#FFFFFF',
-          gray: '#D4D4D4',
-          black: '#181718',
+          white: '#FFFFFF',  // fixed: text label - white
+          gray: '#D4D4D4',  // fixed: text label - gray
+          black: '#181718', // fixed: text label - black
         },
         outline: {
           0: 'rgb(var(--color-outline-0)/<alpha-value>)',
@@ -162,8 +162,8 @@ module.exports = {
           muted: 'rgb(var(--color-background-muted)/<alpha-value>)',
           success: 'rgb(var(--color-background-success)/<alpha-value>)',
           info: 'rgb(var(--color-background-info)/<alpha-value>)',
-          light: '#FBFBFB',
-          dark: '#181719',
+          light: '#FBFBFB', // fixed: background - light
+          dark: '#181719',  // fixed: background - dark
         },
         indicator: {
           primary: 'rgb(var(--color-indicator-primary)/<alpha-value>)',
@@ -197,6 +197,81 @@ module.exports = {
         'soft-2': '0px 0px 20px rgba(38, 38, 38, 0.2)',
         'soft-3': '0px 0px 30px rgba(38, 38, 38, 0.1)',
         'soft-4': '0px 0px 40px rgba(38, 38, 38, 0.1)',
+      },
+
+      /* Figma Spacing tokens (px values) */
+      spacing: {
+        'px': 1,
+        '0': 0,
+        '0.5': 2,
+        '1': 4,
+        '1.5': 6,
+        '2': 8,
+        '2.5': 10,
+        '3': 12,
+        '3.5': 14,
+        '4': 16,
+        '4.5': 18,
+        '5': 20,
+        '6': 24,
+        '7': 28,
+        '8': 32,
+        '9': 36,
+        '10': 40,
+        '11': 44,
+        '12': 48,
+        '16': 64,
+        '20': 80,
+        '24': 96,
+        '32': 128,
+        '40': 160,
+        '48': 192,
+        '56': 224,
+        '64': 256,
+        '72': 288,
+        '80': 320,
+        '96': 384,
+      },
+
+      /* Figma Border width tokens */
+      borderWidth: {
+        '0': 0,
+        '1': 1,
+        '2': 2,
+        '4': 4,
+        '8': 8,
+      },
+
+      /* Figma Border radius tokens */
+      borderRadius: {
+        'none': 0,
+        'xs': 2,
+        'sm': 4,
+        'md': 6,
+        'lg': 8,
+        'xl': 12,
+        '2xl': 16,
+        '3xl': 24,
+        'full': 9999,
+      },
+
+      /* Figma Opacity tokens */
+      opacity: {
+        '0': '0',
+        '5': '0.05',
+        '10': '0.1',
+        '20': '0.2',
+        '25': '0.25',
+        '30': '0.3',
+        '40': '0.4',
+        '50': '0.5',
+        '60': '0.6',
+        '70': '0.7',
+        '75': '0.75',
+        '80': '0.8',
+        '90': '0.9',
+        '95': '0.95',
+        '100': '1',
       },
     },
   },

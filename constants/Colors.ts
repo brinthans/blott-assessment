@@ -1,26 +1,36 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Colors derived from Figma design tokens.
+ *
+ * Fixed tokens: constants/tokens/fixed/
+ * Semantic tokens: constants/tokens/semantic/ (consumed via gluestack-ui-provider/config.ts)
  */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+export const FixedColors = {
+  backgroundLight: '#FBFBFB',
+  backgroundDark: '#181719',
+  textWhite: '#FFFFFF',
+  textGray: '#D4D4D4',
+  textBlack: '#181718',
+};
+
+const tintColorLight = '#805AD5'; // primary-500 from Figma
+const tintColorDark = '#E6E6E6'; // primary-500 dark from Figma
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: FixedColors.textBlack,
+    background: FixedColors.backgroundLight,
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: '#737373', // typography-600
+    tabIconDefault: '#737373',
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: FixedColors.textWhite,
+    background: FixedColors.backgroundDark,
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#A3A3A3', // typography-400 dark
+    tabIconDefault: '#A3A3A3',
     tabIconSelected: tintColorDark,
   },
 };

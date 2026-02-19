@@ -7,20 +7,21 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import * as NativeSplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import { Slot, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Fab, FabIcon } from '@/components/ui/fab';
 import { MoonIcon, SunIcon } from '@/components/ui/icon';
+import CustomSplashScreen from '@/components/SplashScreen';
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
-SplashScreen.preventAutoHideAsync();
+NativeSplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -28,17 +29,27 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  const [styleLoaded, setStyleLoaded] = useState(false);
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  const [appReady, setAppReady] = useState(false);
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      NativeSplashScreen.hideAsync();
+      // Show custom splash for a brief moment before transitioning
+      const timer = setTimeout(() => {
+        setAppReady(true);
+      }, 2000);
+      return () => clearTimeout(timer);
     }
   }, [loaded]);
+
+  if (!loaded || !appReady) {
+    return <CustomSplashScreen />;
+  }
+
   return <RootLayoutNav />;
 }
 

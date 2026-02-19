@@ -3,20 +3,21 @@ import { vars } from 'nativewind';
 
 export const config = {
   light: vars({
-    '--color-primary-0': '179 179 179',
-    '--color-primary-50': '153 153 153',
-    '--color-primary-100': '128 128 128',
-    '--color-primary-200': '115 115 115',
-    '--color-primary-300': '102 102 102',
-    '--color-primary-400': '82 82 82',
-    '--color-primary-500': '51 51 51',
-    '--color-primary-600': '41 41 41',
-    '--color-primary-700': '31 31 31',
-    '--color-primary-800': '13 13 13',
-    '--color-primary-900': '10 10 10',
-    '--color-primary-950': '8 8 8',
+    /* Primary */
+    '--color-primary-0': '250 247 255',
+    '--color-primary-50': '243 237 255',
+    '--color-primary-100': '230 217 255',
+    '--color-primary-200': '209 179 255',
+    '--color-primary-300': '183 148 246',
+    '--color-primary-400': '159 122 234',
+    '--color-primary-500': '128 90 213',
+    '--color-primary-600': '107 70 193',
+    '--color-primary-700': '85 60 154',
+    '--color-primary-800': '68 51 122',
+    '--color-primary-900': '50 38 89',
+    '--color-primary-950': '26 22 37',
 
-    /* Secondary  */
+    /* Secondary */
     '--color-secondary-0': '253 253 253',
     '--color-secondary-50': '251 251 251',
     '--color-secondary-100': '246 246 246',
@@ -143,18 +144,19 @@ export const config = {
     '--color-background-950': '18 18 18',
 
     /* Background Special */
+    '--color-background-muted': '247 248 247',
+    '--color-background-success': '237 252 242',
     '--color-background-error': '254 241 241',
     '--color-background-warning': '255 243 234',
-    '--color-background-success': '237 252 242',
-    '--color-background-muted': '247 248 247',
     '--color-background-info': '235 248 254',
 
-    /* Focus Ring Indicator  */
+    /* Focus Ring Indicator */
     '--color-indicator-primary': '55 55 55',
     '--color-indicator-info': '83 153 236',
     '--color-indicator-error': '185 28 28',
   }),
   dark: vars({
+    /* Primary */
     '--color-primary-0': '166 166 166',
     '--color-primary-50': '175 175 175',
     '--color-primary-100': '186 186 186',
@@ -168,7 +170,7 @@ export const config = {
     '--color-primary-900': '254 249 249',
     '--color-primary-950': '253 252 252',
 
-    /* Secondary  */
+    /* Secondary */
     '--color-secondary-0': '20 20 20',
     '--color-secondary-50': '23 23 23',
     '--color-secondary-100': '31 31 31',
@@ -177,7 +179,7 @@ export const config = {
     '--color-secondary-400': '56 57 57',
     '--color-secondary-500': '63 64 64',
     '--color-secondary-600': '86 86 86',
-    '--color-secondary-700': '110 110 110',
+    '--color-secondary-700': '101 101 101',
     '--color-secondary-800': '135 135 135',
     '--color-secondary-900': '150 150 150',
     '--color-secondary-950': '164 164 164',
@@ -295,13 +297,13 @@ export const config = {
     '--color-background-950': '255 255 255',
 
     /* Background Special */
+    '--color-background-muted': '51 51 51',
+    '--color-background-success': '28 43 33',
     '--color-background-error': '66 43 43',
     '--color-background-warning': '65 47 35',
-    '--color-background-success': '28 43 33',
-    '--color-background-muted': '51 51 51',
     '--color-background-info': '26 40 46',
 
-    /* Focus Ring Indicator  */
+    /* Focus Ring Indicator */
     '--color-indicator-primary': '247 247 247',
     '--color-indicator-info': '161 199 245',
     '--color-indicator-error': '232 70 69',
