@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { fetchNews as fetchNewsApi, NewsArticle } from '@/services/newsApi';
 
-interface NewsState {
+export interface NewsState {
     articles: NewsArticle[];
     loading: boolean;
     refreshing: boolean;

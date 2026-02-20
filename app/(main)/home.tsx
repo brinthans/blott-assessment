@@ -4,7 +4,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Heading } from '@/components/ui/heading';
 import { Button, ButtonText } from '@/components/ui/button';
-import { useNewsStore } from '@/store/useNewsStore';
+import { useNewsStore, NewsState } from '@/store/useNewsStore';
 import { NewsArticle } from '@/services/newsApi';
 import NewsCard from '@/components/NewsCard';
 
@@ -27,11 +27,11 @@ const ListEmpty = () => (
 );
 
 export default function Home() {
-  const articles = useNewsStore((s) => s.articles);
-  const loading = useNewsStore((s) => s.loading);
-  const refreshing = useNewsStore((s) => s.refreshing);
-  const error = useNewsStore((s) => s.error);
-  const fetchNews = useNewsStore((s) => s.fetchNews);
+  const articles = useNewsStore((s: NewsState) => s.articles);
+  const loading = useNewsStore((s: NewsState) => s.loading);
+  const refreshing = useNewsStore((s: NewsState) => s.refreshing);
+  const error = useNewsStore((s: NewsState) => s.error);
+  const fetchNews = useNewsStore((s: NewsState) => s.fetchNews);
 
   useEffect(() => {
     fetchNews('general');
