@@ -38,7 +38,7 @@ export default function SetupPinScreen() {
                 }, 300);
             } else {
                 if (digits === pin) {
-                    router.replace('/home');
+                    router.replace('/enable-faceid');
                 } else {
                     setError('PINs do not match. Please try again.');
                     setConfirmPin('');

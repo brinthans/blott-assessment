@@ -4,8 +4,8 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  Pressable,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
@@ -15,10 +15,11 @@ import { fetchNews, NewsArticle } from '@/services/newsApi';
 
 function formatDate(unixTimestamp: number): string {
   const date = new Date(unixTimestamp * 1000);
-  const day = date.getDate();
-  const month = date.toLocaleString('default', { month: 'short' });
-  const year = date.getFullYear();
-  return `${day} ${month} ${year}`;
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 function NewsCard({ article }: { article: NewsArticle }) {
@@ -29,38 +30,66 @@ function NewsCard({ article }: { article: NewsArticle }) {
   };
 
   return (
-    <Pressable onPress={handlePress}>
-      <Box className="flex-row bg-background-50 rounded-2xl mx-4 mb-3 overflow-hidden shadow-sm">
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.85} style={{ width: '100%' }}>
+      <Box
+        className="flex-row items-start bg-background-0 shadow-hard-5 rounded-xl p-5"
+        style={{
+          borderWidth: 1,
+          borderColor: '#DDDCDB',
+          height: 200,
+          gap: 24,
+        }}
+      >
+        {/* Thumbnail */}
         {article.image ? (
           <Image
             source={{ uri: article.image }}
-            style={{ width: 100, height: 100 }}
+            style={{ width: 140.5, height: 160 }}
             resizeMode="cover"
           />
         ) : (
-          <Box className="w-[100px] h-[100px] bg-background-200 items-center justify-center">
-            <Text className="text-typography-400 text-2xl">📰</Text>
+          <Box
+            className="bg-background-200 items-center justify-center"
+            style={{ width: 140.5, height: 160 }}
+          >
+            <Text className="text-typography-400 text-3xl">📰</Text>
           </Box>
         )}
-        <Box className="flex-1 p-3 justify-between">
+
+        {/* Content */}
+        <Box className="flex-1 justify-between h-full py-1">
+          {/* Date & Source */}
+          <Box className="mb-2">
+            <Text
+              className="text-2xs text-typography-700 mb-1"
+              style={{ width: 140.5 }}
+            >
+              {formatDate(article.datetime)}
+            </Text>
+            <Text
+              className="text-2xs text-typography-800"
+              style={{ width: 94, height: 14 }}
+            >
+              {article.source}
+            </Text>
+          </Box>
+
+          {/* Headline */}
           <Text
-            className="font-semibold text-sm text-typography-900 leading-5"
-            numberOfLines={2}
+            className="text-base font-bold text-typography-900 flex-1 self-stretch"
+            numberOfLines={4}
+            style={{ letterSpacing: 0.2 }}
           >
             {article.headline}
           </Text>
-          <Box className="flex-row items-center mt-2">
-            <Text className="text-xs text-typography-500 font-medium">
-              {article.source}
-            </Text>
-            <Text className="text-xs text-typography-400 mx-1">•</Text>
-            <Text className="text-xs text-typography-400">
-              {formatDate(article.datetime)}
-            </Text>
-          </Box>
+
+          {/* Read More */}
+          <Text className="text-2xs text-typography-600 underline mt-auto">
+            Read More
+          </Text>
         </Box>
       </Box>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
@@ -95,7 +124,7 @@ export default function Home() {
   if (loading) {
     return (
       <Box className="flex-1 bg-background-0 items-center justify-center">
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#805AD5" />
         <Text className="mt-4 text-typography-500">Loading news...</Text>
       </Box>
     );
@@ -111,7 +140,7 @@ export default function Home() {
         <Text className="text-typography-500 text-center mb-6">{error}</Text>
         <Button
           size="md"
-          className="bg-primary-500 rounded-full px-8"
+          className="bg-primary-500 rounded-3xl px-8"
           onPress={() => loadNews()}
         >
           <ButtonText>Try Again</ButtonText>
@@ -122,23 +151,38 @@ export default function Home() {
 
   return (
     <Box className="flex-1 bg-background-0">
-      <Box className="pt-safe px-4 pb-2 bg-background-0">
-        <Heading className="text-2xl font-bold text-typography-900 mt-4">
-          Headlines
-        </Heading>
-      </Box>
       <FlatList
         data={news}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <NewsCard article={item} />}
-        contentContainerStyle={{ paddingTop: 12, paddingBottom: 40 }}
+        contentContainerStyle={{
+          paddingBottom: 40,
+          paddingHorizontal: 24, // px-6
+          gap: 12, // gap-3 between items
+        }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => loadNews(true)}
-            tintColor="#6366f1"
+            tintColor="#805AD5"
           />
+        }
+        ListHeaderComponent={
+          <Box className="pt-safe px-4 pb-4 mt-8">
+            <Heading
+              style={{
+                color: '#000',
+                fontFamily: 'Roboto',
+                fontSize: 36,
+                fontStyle: 'normal',
+                fontWeight: '400',
+                lineHeight: undefined,
+              }}
+            >
+              News Feed
+            </Heading>
+          </Box>
         }
         ListEmptyComponent={
           <Box className="items-center justify-center py-20">
