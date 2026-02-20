@@ -20,6 +20,7 @@ import {
 import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
 import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
 import { ScrollView } from '@/components/ui/scroll-view';
+import { useUserStore } from '@/store/useUserStore';
 
 type FormErrors = {
     fullName?: string;
@@ -71,6 +72,7 @@ export default function SignupScreen() {
 
     const handleSignUp = () => {
         if (!validate()) return;
+        useUserStore.getState().setUser(fullName.trim(), email.trim());
         router.push('/setup-pin');
     };
 

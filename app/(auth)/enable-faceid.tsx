@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Box } from '@/components/ui/box';
@@ -7,6 +8,9 @@ import { Text } from '@/components/ui/text';
 import { Heading } from '@/components/ui/heading';
 import { Button, ButtonText } from '@/components/ui/button';
 import Svg, { Path } from 'react-native-svg';
+import { useAuthStore } from '@/store/useAuthStore';
+
+const biometricLabel = Platform.OS === 'ios' ? 'Face ID' : 'Fingerprint';
 
 function FaceIdIcon() {
     return (
@@ -36,24 +40,32 @@ export default function EnableFaceIdScreen() {
 
             if (hasHardware && isEnrolled) {
                 const result = await LocalAuthentication.authenticateAsync({
-                    promptMessage: 'Enable Face ID for Blott',
+                    promptMessage: `Enable ${biometricLabel} for Blott`,
                     fallbackLabel: 'Use PIN',
                 });
 
                 if (result.success) {
-                    // Face ID enabled successfully
+                    useAuthStore.getState().setFaceIdEnabled(true);
+                    useAuthStore.getState().completeOnboarding();
+                    useAuthStore.getState().setAuthenticated(true);
                     router.replace('/home');
                 }
             } else {
                 // No biometric hardware or not enrolled
+                useAuthStore.getState().completeOnboarding();
+                useAuthStore.getState().setAuthenticated(true);
                 router.replace('/home');
             }
         } catch {
+            useAuthStore.getState().completeOnboarding();
+            useAuthStore.getState().setAuthenticated(true);
             router.replace('/home');
         }
     };
 
     const handleSkip = () => {
+        useAuthStore.getState().completeOnboarding();
+        useAuthStore.getState().setAuthenticated(true);
         router.replace('/home');
     };
 
@@ -68,12 +80,12 @@ export default function EnableFaceIdScreen() {
 
                 {/* Title */}
                 <Heading className="text-2xl font-normal text-typography-900 text-center mt-6 mb-2">
-                    Login with a Look
+                    {Platform.OS === 'ios' ? 'Login with a Look' : 'Login with a Touch'}
                 </Heading>
 
                 {/* Subtitle */}
                 <Text className="text-base text-typography-600 text-center px-5">
-                    Use face ID instead of a password next time you login.
+                    Use {biometricLabel} instead of a password next time you login.
                 </Text>
             </Box>
 
@@ -85,7 +97,7 @@ export default function EnableFaceIdScreen() {
                     onPress={handleEnableFaceId}
                 >
                     <ButtonText className="text-typography-white font-semibold text-lg">
-                        Enable Face ID
+                        Enable {biometricLabel}
                     </ButtonText>
                 </Button>
 

@@ -8,6 +8,7 @@ import { Heading } from '@/components/ui/heading';
 import { Pressable } from '@/components/ui/pressable';
 import { Icon } from '@/components/ui/icon';
 import { ChevronLeftIcon } from '@/components/ui/icon';
+import { useAuthStore } from '@/store/useAuthStore';
 
 type PinStep = 'enter' | 'confirm';
 
@@ -38,6 +39,7 @@ export default function SetupPinScreen() {
                 }, 300);
             } else {
                 if (digits === pin) {
+                    useAuthStore.getState().setPin(pin);
                     router.replace('/enable-faceid');
                 } else {
                     setError('PINs do not match. Please try again.');

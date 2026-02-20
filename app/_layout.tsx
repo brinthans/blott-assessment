@@ -8,9 +8,10 @@ import {
 import { useFonts } from 'expo-font';
 import * as NativeSplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { Slot } from 'expo-router';
+import { Slot, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import CustomSplashScreen from '@/components/SplashScreen';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,6 +51,16 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const router = useRouter();
+  const onboardingComplete = useAuthStore((s) => s.onboardingComplete);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  useEffect(() => {
+    if (onboardingComplete && !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [onboardingComplete, isAuthenticated]);
+
   return (
     <GluestackUIProvider mode="light">
       <ThemeProvider value={DefaultTheme}>
