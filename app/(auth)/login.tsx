@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TextInput, Animated, Platform } from 'react-native';
+import { TextInput, Animated, Platform, Pressable, Keyboard } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Box } from '@/components/ui/box';
@@ -84,7 +84,7 @@ export default function LoginScreen() {
     };
 
     return (
-        <Box className="flex-1 bg-[#3B1578]">
+        <Pressable className="flex-1 bg-[#3B1578]" onPress={() => inputRef.current?.focus()}>
             {/* Content */}
             <Box className="flex-1">
                 <Box className="pt-safe" />
@@ -162,9 +162,10 @@ export default function LoginScreen() {
                     keyboardType="number-pad"
                     maxLength={4}
                     caretHidden
-                    className="absolute opacity-0 h-px w-px"
+                    autoFocus
+                    style={{ position: 'absolute', opacity: 0, height: 1, width: 1 }}
                 />
             </Box>
-        </Box>
+        </Pressable>
     );
 }

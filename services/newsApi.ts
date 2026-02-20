@@ -1,5 +1,5 @@
-const API_KEY = 'crals9pr01qhk4bqotb0crals9pr01qhk4bqotbg';
-const BASE_URL = 'https://finnhub.io/api/v1';
+const API_KEY = process.env.EXPO_PUBLIC_FIN_API_KEY || 'crals9pr01qhk4bqotb0crals9pr01qhk4bqotbg';
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL || 'https://finnhub.io/api/v1';
 
 export interface NewsArticle {
     id: number;

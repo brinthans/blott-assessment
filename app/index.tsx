@@ -224,23 +224,20 @@ export default function SignupScreen() {
                             )}
                         </FormControl>
                     </VStack>
-
-                    {/* Spacer pushes button to bottom */}
-                    <Box className="flex-1" />
-
-                    {/* Sign Up Button */}
-                    <Box className="px-5 pb-safe mb-4 mt-8">
-                        <Button
-                            size="lg"
-                            className="bg-primary-500 rounded-3xl w-full h-11 px-6 gap-3 shrink-0 justify-center items-center"
-                            onPress={handleSignUp}
-                        >
-                            <ButtonText className="text-typography-white font-semibold text-lg">
-                                Sign Up
-                            </ButtonText>
-                        </Button>
-                    </Box>
                 </ScrollView>
+
+                {/* Sign Up Button Fixed to Bottom */}
+                <Box className="px-5 pb-safe mb-4 mt-4 bg-background-0">
+                    <Button
+                        size="lg"
+                        className="bg-primary-500 rounded-3xl w-full h-11 px-6 gap-3 shrink-0 justify-center items-center"
+                        onPress={handleSignUp}
+                    >
+                        <ButtonText className="text-typography-white font-semibold text-lg">
+                            Sign Up
+                        </ButtonText>
+                    </Button>
+                </Box>
             </KeyboardAvoidingView>
         </Box>
     );

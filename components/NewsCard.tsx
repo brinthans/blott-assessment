@@ -30,7 +30,7 @@ const NewsCard = React.memo(function NewsCard({ article }: { article: NewsArticl
                 )}
 
                 {/* Content */}
-                <Box className="flex-1 justify-between h-full py-1">
+                <Box className="flex-1 h-full py-1">
                     {/* Date & Source */}
                     <Box className="mb-2">
                         <Text className="text-2xs text-typography-700 mb-1 w-[140.5px]">
@@ -43,14 +43,14 @@ const NewsCard = React.memo(function NewsCard({ article }: { article: NewsArticl
 
                     {/* Headline */}
                     <Text
-                        className="text-base font-bold text-typography-900 flex-1 self-stretch tracking-[0.2px]"
+                        className="text-base font-bold leading-5 text-typography-900 self-stretch tracking-[0.2px]"
                         numberOfLines={4}
                     >
                         {article.headline}
                     </Text>
 
                     {/* Read More */}
-                    <Text className="text-2xs text-typography-600 underline mt-auto">
+                    <Text className="text-2xs text-typography-600 underline mt-2">
                         Read More
                     </Text>
                 </Box>
