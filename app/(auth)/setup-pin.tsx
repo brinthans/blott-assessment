@@ -56,7 +56,7 @@ export default function SetupPinScreen() {
             setConfirmPin('');
             setError('');
         } else {
-            router.back();
+            router.replace('/');
         }
     };
 

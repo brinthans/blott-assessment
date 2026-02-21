@@ -73,7 +73,7 @@ export default function SignupScreen() {
     const handleSignUp = () => {
         if (!validate()) return;
         useUserStore.getState().setUser(fullName.trim(), email.trim());
-        router.push('/setup-pin');
+        router.replace('/setup-pin');
     };
 
     return (
