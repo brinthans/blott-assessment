@@ -56,7 +56,9 @@ function RootLayoutNav() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useEffect(() => {
-    if (onboardingComplete && !isAuthenticated) {
+    if (!onboardingComplete) {
+      router.replace('/');
+    } else if (!isAuthenticated) {
       router.replace('/login');
     }
   }, [onboardingComplete, isAuthenticated]);

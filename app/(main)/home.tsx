@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
-import { FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { FlatList, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Heading } from '@/components/ui/heading';
 import { Button, ButtonText } from '@/components/ui/button';
 import { useNewsStore, NewsState } from '@/store/useNewsStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { NewsArticle } from '@/services/newsApi';
 import NewsCard from '@/components/NewsCard';
 
@@ -12,9 +13,28 @@ const keyExtractor = (item: NewsArticle) => item.id.toString();
 
 const ListHeader = () => (
   <Box className="pt-safe px-4 pb-4 mt-8">
-    <Heading className="text-4xl font-normal text-black">
-      News Feed
-    </Heading>
+    <Box className="flex-row items-center justify-between">
+      <Heading className="text-4xl font-normal text-black">
+        News Feed
+      </Heading>
+      <Button
+        size="sm"
+        variant="outline"
+        className="rounded-3xl border-red-400"
+        onPress={() =>
+          Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Logout', style: 'destructive', onPress: () => useAuthStore.getState().reset() },
+            ]
+          )
+        }
+      >
+        <ButtonText className="text-red-500 text-sm">Logout</ButtonText>
+      </Button>
+    </Box>
   </Box>
 );
 
